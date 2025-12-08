@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct QuizAppView: View {
-    @State private var viewModel = QuizViewModel()
+    @Environment(QuizViewModel.self) private var viewModel
     @State private var selectedAnswer: String?
     @State private var showResultsView = false
     
@@ -19,8 +19,8 @@ struct QuizAppView: View {
 //                Button("Restart Quiz") {
 //                    viewModel.reStartQuiz()
 //                }
+                
                 QuizCompletionView(showResults: $showResultsView)
-                    .environment(viewModel)
                 
             } else {
                 VStack(alignment: .leading, spacing: 8) {
@@ -91,7 +91,6 @@ struct QuizAppView: View {
         }
         .sheet(isPresented: $showResultsView, content: {
             QuizResultsView()
-                .environment(viewModel)
                 .presentationDetents([.medium])
         })
     }
@@ -99,6 +98,7 @@ struct QuizAppView: View {
 
 #Preview {
     QuizAppView()
+        .environment(QuizViewModel())
 }
 
 /*

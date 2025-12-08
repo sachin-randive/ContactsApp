@@ -10,8 +10,10 @@ import SwiftUI
 @main
 struct InterviewPrepTutorialApp: App {
     var body: some Scene {
+        @State  var viewModel  = QuizViewModel()
         WindowGroup {
             QuizAppView()
+                .environment(viewModel)
         }
     }
 }

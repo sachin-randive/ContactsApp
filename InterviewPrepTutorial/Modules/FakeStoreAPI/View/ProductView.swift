@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct ProductView: View {
-    let products = Product.mockProducts
+   // let products = Product.mockProducts
+    @State private var viewModel = ProductViewModel()
+    
     var body: some View {
         List {
-            ForEach(products) { product in
+            ForEach(viewModel.products) { product in
                 HStack {
                     AsyncImage(url: URL(string: product.image))
                         .scaledToFit()
@@ -29,6 +31,7 @@ struct ProductView: View {
                 }
             }
         }
+        .task { await viewModel.fetchProducts()}
     }
 }
 

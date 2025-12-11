@@ -21,6 +21,7 @@ struct ProductService: ProductServiceProtocol {
 struct MocProductService: ProductServiceProtocol {
     
     func fetchProducts() async throws -> [Product] {
+        try await Task.sleep(for: .seconds(2))
         return Product.mockProducts
     }
 }

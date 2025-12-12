@@ -16,7 +16,7 @@ class ProductViewModel {
     
     private let service: ProductServiceProtocol
     
-    init(service: ProductServiceProtocol = MocProductService()) {
+    init(service: ProductServiceProtocol = ProductService()) {
         self.service = service
         // self.products = Product.mockProducts
     }

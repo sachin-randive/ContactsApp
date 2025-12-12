@@ -29,11 +29,12 @@ struct ProductView: View {
                                 .frame(width: 80, height: 80)
                                 .clipShape(.rect(cornerRadius: 10))
                             
-                            VStack(alignment: .leading) {
+                            LazyVStack(alignment: .leading) {
                                 Text(product.title)
                                 
                                 Text(product.description)
                                     .foregroundStyle(.gray)
+                                    .lineLimit(4)
                             }
                             .font(.subheadline)
                             

@@ -28,7 +28,7 @@ class ProductViewModel {
             let products = try await service.fetchProducts()
             self.loadingState = products.isEmpty ? .empty : .completed(data: products)
         } catch {
-            // Handle error....
+            self.loadingState = .error(error: error)
         }
     }
 }

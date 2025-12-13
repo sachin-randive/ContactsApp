@@ -14,7 +14,7 @@ protocol ProductServiceProtocol {
 struct ProductService: ProductServiceProtocol {
     private let urlString = "https://fakestoreapi.com/products"
     func fetchProducts() async throws -> [Product] {
-        guard let url = URL(string: urlString) else { throw URLError(.badURL) }
+        guard let url = URL(string: urlString) else { throw APIError.invalidURL}
         let (data, response) = try await URLSession.shared.data(from: url)
         try validateResponse(response)
         return try JSONDecoder().decode([Product].self, from: data)
@@ -22,10 +22,10 @@ struct ProductService: ProductServiceProtocol {
     
     func validateResponse(_ response: URLResponse) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw URLError(.badServerResponse)
+            throw APIError.invalidResponse
         }
         guard httpResponse.statusCode == 200 else {
-            throw URLError(.badServerResponse)
+            throw APIError.invalidResponse
         }
     }
 }

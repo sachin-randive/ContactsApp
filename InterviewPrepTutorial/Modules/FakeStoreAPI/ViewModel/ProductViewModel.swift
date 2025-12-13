@@ -10,7 +10,6 @@ import Foundation
 @Observable
 class ProductViewModel {
     //    var products = [Product]()
-    //    var isLoading = false
     
     var loadingState: ContentLoadingState<Product> = .loading
     
@@ -22,8 +21,6 @@ class ProductViewModel {
     }
     
     func fetchProducts() async {
-        //        isLoading = true
-        //        defer { isLoading = false}
         do {
             let products = try await service.fetchProducts()
             self.loadingState = products.isEmpty ? .empty : .completed(data: products)

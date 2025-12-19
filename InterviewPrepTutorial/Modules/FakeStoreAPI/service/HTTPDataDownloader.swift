@@ -15,6 +15,7 @@ struct HTTPDataDownloader: HTTPDataDownloaderProtocol {
     func fetchData<T: Codable>(as type: T.Type, from endpoint: FakeStoreAPIEndpoint) async throws -> [T] {
         let url = try buildURL(endpoint: endpoint)
         let (data, reponse) = try await URLSession.shared.data(from: url)
+        try validateResponse(reponse)
         let result = try JSONDecoder().decode([T].self, from: data)
         return result
     }

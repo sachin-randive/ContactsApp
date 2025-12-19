@@ -20,9 +20,9 @@ struct ProductView: View {
                 ContentUnavailableView("No Products Found", systemImage: "cart.fill")
             case .error(let error):
                 Text("Error: \(error.localizedDescription)")
-            case .completed(let products):
+            case .completed:
                 List {
-                    ForEach(products) { product in
+                    ForEach(viewModel.products) { product in
                         HStack {
                             AsyncImage(url: URL(string: product.image))
                                 .scaledToFit()

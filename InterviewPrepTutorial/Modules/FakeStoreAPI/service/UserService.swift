@@ -1,38 +1,41 @@
 //
-//  ProductService.swift
+//  UserService.swift
 //  InterviewPrepTutorial
 //
-//  Created by Sachin Randive on 10/12/25.
+//  Created by Sachin Randive on 19/12/25.
 //
 
 import Foundation
 
-protocol ProductServiceProtocol {
-    func fetchProducts() async throws -> [Product]
+protocol UserServiceProtocol {
+    func fetchUsers() async throws -> [User]
 }
 
-struct ProductService: ProductServiceProtocol {
-    private let urlString = "https://fakestoreapi.com/products"
-    private let cache = ProductCache()
+struct UserService: UserServiceProtocol {
+    private let urlString = "https://fakestoreapi.com/users"
     private let refreshInterval: TimeInterval = 60 * 10 // 10 Min
     private var lastFetchedTime: Date?
     private let downloader: HTTPDataDownloaderProtocol
     
-    init(downloader: HTTPDataDownloaderProtocol = HTTPDataDownloader()) {
+    init(downloader: HTTPDataDownloaderProtocol =  HTTPDataDownloader()) {
         self.downloader = downloader
         getLastFetchedTime()
     }
     
-    func fetchProducts() async throws -> [Product] {
-        if !needRefresh ,let cachedProducts = try? cache.fetchProducts() {
-            print(">>> Fetching products from cache")
-            return cachedProducts
-        }
-        
-        let products = try await downloader.fetchData(as: Product.self, from: .products)
+    func fetchUsers() async throws -> [User] {
+        print("Getting users from API")
+        let users = try await downloader.fetchData(as: User.self, from: .users)
         saveLastFetchedTime()
-        try cache.saveProducts(products)
-        return products
+        return users
+    }
+    
+    private func validateResponse(_ response: URLResponse) throws {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
+        }
+        guard httpResponse.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
     }
     
     private func saveLastFetchedTime() {
@@ -50,10 +53,10 @@ struct ProductService: ProductServiceProtocol {
     }
 }
 
-struct MocProductService: ProductServiceProtocol {
+struct MocUserService: UserServiceProtocol {
     
-    func fetchProducts() async throws -> [Product] {
+    func fetchUsers() async throws -> [User] {
         try await Task.sleep(for: .seconds(2))
-        return Product.mockProducts
+        return User.mockUsers
     }
 }

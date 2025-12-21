@@ -12,7 +12,8 @@ protocol UserServiceProtocol {
 }
 
 struct UserService: UserServiceProtocol {
-    private let urlString = "https://fakestoreapi.com/users"
+   // private let urlString = "https://fakestoreapi.com/users"
+    private let cache = CacheManager(filename: "users.json")
     private let refreshInterval: TimeInterval = 60 * 10 // 10 Min
     private var lastFetchedTime: Date?
     private let downloader: HTTPDataDownloaderProtocol
@@ -23,9 +24,15 @@ struct UserService: UserServiceProtocol {
     }
     
     func fetchUsers() async throws -> [User] {
+        if !needRefresh {
+            print(">>> Fetching products from cache")
+            return try cache.getData(as: User.self)
+        }
+        
         print("Getting users from API")
         let users = try await downloader.fetchData(as: User.self, from: .users)
         saveLastFetchedTime()
+        cache.saveData(users)
         return users
     }
     

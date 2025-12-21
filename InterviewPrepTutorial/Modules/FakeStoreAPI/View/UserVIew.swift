@@ -12,7 +12,7 @@ struct UserVIew: View {
     @State private var viewModel = UserViewModel()
     
     var body: some View {
-        Group {
+        VStack {
             switch viewModel.loadingState {
             case .loading:
                 ProgressView()

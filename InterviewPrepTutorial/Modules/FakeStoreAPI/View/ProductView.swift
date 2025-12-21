@@ -10,41 +10,62 @@ import SwiftUI
 struct ProductView: View {
     // let products = Product.mockProducts
     @State private var viewModel = ProductViewModel()
+    @State private var searchText = ""
     
     var body: some View {
-        VStack {
-            switch viewModel.loadingState {
-            case .loading:
-                ProgressView()
-            case .empty:
-                ContentUnavailableView("No Products Found", systemImage: "cart.fill")
-            case .error(let error):
-                Text("Error: \(error.localizedDescription)")
-            case .completed:
-                List {
-                    ForEach(viewModel.products) { product in
-                        HStack {
-                            AsyncImage(url: URL(string: product.image))
-                                .scaledToFit()
-                                .frame(width: 80, height: 80)
-                                .clipShape(.rect(cornerRadius: 10))
-                            
-                            LazyVStack(alignment: .leading) {
-                                Text(product.title)
+        NavigationStack {
+            VStack {
+                switch viewModel.loadingState {
+                case .loading:
+                    ProgressView()
+                case .empty:
+                    ContentUnavailableView("No Products Found", systemImage: "cart.fill")
+                case .error(let error):
+                    Text("Error: \(error.localizedDescription)")
+                case .completed:
+                    List {
+                        ForEach(filteredProducts) { product in
+                            HStack {
+                                AsyncImage(url: URL(string: product.image))
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(.rect(cornerRadius: 10))
                                 
-                                Text(product.description)
-                                    .foregroundStyle(.gray)
-                                    .lineLimit(4)
+                                LazyVStack(alignment: .leading) {
+                                    Text(product.title)
+                                    
+                                    Text(product.description)
+                                        .foregroundStyle(.gray)
+                                        .lineLimit(4)
+                                }
+                                .font(.subheadline)
+                                
                             }
-                            .font(.subheadline)
-                            
                         }
                     }
+                    .searchable(text: $searchText, prompt: "search products...")
                 }
             }
+            .navigationTitle("Products")
+            .task { await viewModel.fetchProducts()}
         }
-        .task { await viewModel.fetchProducts()}
     }
+}
+private extension ProductView {
+    var filteredProducts: [Product] {
+        
+        guard case .completed = viewModel.loadingState else {
+         return []
+        }
+        guard !searchText.isEmpty else {
+            return viewModel.products
+        }
+        return viewModel.products.filter {
+            $0.title.lowercased().contains(searchText.lowercased()) ||
+            $0.description.lowercased().contains(searchText.lowercased())
+        }
+    }
+    
 }
 
 #Preview {

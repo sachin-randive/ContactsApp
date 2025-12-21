@@ -8,19 +8,55 @@
 import Foundation
 
 protocol HTTPDataDownloaderProtocol {
-    func fetchData<T: Codable>(as type: T.Type, from endpoint: FakeStoreAPIEndpoint) async throws-> [T]
+    func fetchData<T: Codable>(as type: T.Type) async throws-> [T]
 }
 
 struct HTTPDataDownloader: HTTPDataDownloaderProtocol {
-    func fetchData<T: Codable>(as type: T.Type, from endpoint: FakeStoreAPIEndpoint) async throws -> [T] {
-        let url = try buildURL(endpoint: endpoint)
+    private let cache: CacheManager?
+    private let endpoint: FakeStoreAPIEndpoint
+    private let refreshInterval: TimeInterval = 60 * 10 // 10 Min
+    private var lastFetchedTime: Date?
+    private var userDefaultsLastFetchedKey: String
+    init(endpoint: FakeStoreAPIEndpoint,cache: CacheManager? = nil) {
+        self.endpoint = endpoint
+        self.cache = cache
+        self.userDefaultsLastFetchedKey = endpoint.path
+        self.getLastFetchedTime()
+    }
+    
+    func fetchData<T: Codable>(as type: T.Type) async throws -> [T] {
+        if !needRefresh, let cache {
+            print(">>> Fetching products from cache")
+            return try cache.getData(as:type)
+        }
+        
+        print("Getting users from API")
+        let url = try buildURL()
         let (data, reponse) = try await URLSession.shared.data(from: url)
         try validateResponse(reponse)
         let result = try JSONDecoder().decode([T].self, from: data)
+        if let cache {
+            saveLastFetchedTime()
+            cache.saveData(result)
+        }
         return result
     }
     
-    private func buildURL(endpoint: FakeStoreAPIEndpoint) throws -> URL {
+    private func saveLastFetchedTime() {
+        UserDefaults.standard.set(Date(), forKey: userDefaultsLastFetchedKey)
+    }
+    
+    private mutating func getLastFetchedTime() {
+        lastFetchedTime = UserDefaults.standard.object(forKey: userDefaultsLastFetchedKey) as? Date
+    }
+    private var needRefresh: Bool {
+        guard let lastFetchedTime = lastFetchedTime else { return true }
+        print("Last fetched time: \(lastFetchedTime)")
+        print("Time since last fetch: \(Date().timeIntervalSince(lastFetchedTime))")
+        return Date().timeIntervalSince(lastFetchedTime) > refreshInterval
+    }
+    
+    private func buildURL() throws -> URL {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "fakestoreapi.com"

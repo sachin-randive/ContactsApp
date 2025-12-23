@@ -9,9 +9,10 @@ import Foundation
 
 protocol HTTPDataDownloaderProtocol {
     func fetchData<T: Codable>(as type: T.Type) async throws-> [T]
+    func refreshData<T: Codable>(as type: T.Type) async throws-> [T]
 }
 
-struct HTTPDataDownloader: HTTPDataDownloaderProtocol {
+class HTTPDataDownloader: HTTPDataDownloaderProtocol {
     private let cache: CacheManager?
     private let endpoint: FakeStoreAPIEndpoint
     private let refreshInterval: TimeInterval = 60 * 10 // 10 Min
@@ -42,11 +43,18 @@ struct HTTPDataDownloader: HTTPDataDownloaderProtocol {
         return result
     }
     
+    func refreshData<T: Codable>(as type: T.Type) async throws-> [T] {
+        print("refreshing data...")
+        lastFetchedTime = nil
+        cache?.invalidateCache()
+        return try await fetchData(as: type)
+    }
+    
     private func saveLastFetchedTime() {
         UserDefaults.standard.set(Date(), forKey: userDefaultsLastFetchedKey)
     }
     
-    private mutating func getLastFetchedTime() {
+    private func getLastFetchedTime() {
         lastFetchedTime = UserDefaults.standard.object(forKey: userDefaultsLastFetchedKey) as? Date
     }
     private var needRefresh: Bool {

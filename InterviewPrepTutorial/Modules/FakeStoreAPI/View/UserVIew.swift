@@ -42,6 +42,7 @@ struct UserVIew: View {
                 }
             }
             .navigationTitle("Users")
+            .refreshable {await viewModel.refreshUsers()}
             .task { await viewModel.fetchUsers()}
         }
     }

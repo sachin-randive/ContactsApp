@@ -47,6 +47,7 @@ struct ProductView: View {
                 }
             }
             .navigationTitle("Products")
+            .refreshable { await viewModel.refreshProducts()}
             .task { await viewModel.fetchProducts()}
         }
     }

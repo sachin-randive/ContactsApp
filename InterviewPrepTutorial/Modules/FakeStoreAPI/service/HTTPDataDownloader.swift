@@ -18,10 +18,15 @@ class HTTPDataDownloader: HTTPDataDownloaderProtocol {
     private let refreshInterval: TimeInterval = 60 * 10 // 10 Min
     private var lastFetchedTime: Date?
     private var userDefaultsLastFetchedKey: String
+    private let urlBuilder: URLBuilder
+    private let htttpResponceValidator: HTTPResponceValidator
+    
     init(endpoint: FakeStoreAPIEndpoint,cache: CacheManager? = nil) {
         self.endpoint = endpoint
         self.cache = cache
         self.userDefaultsLastFetchedKey = endpoint.path
+        self.urlBuilder = URLBuilder(endpoint: endpoint)
+        self.htttpResponceValidator = HTTPResponceValidator()
         self.getLastFetchedTime()
     }
     
@@ -32,9 +37,9 @@ class HTTPDataDownloader: HTTPDataDownloaderProtocol {
         }
         
         print("Getting users from API")
-        let url = try buildURL()
+        let url = try urlBuilder.buildURL()
         let (data, reponse) = try await URLSession.shared.data(from: url)
-        try validateResponse(reponse)
+        try htttpResponceValidator.validateResponse(reponse)
         let result = try JSONDecoder().decode([T].self, from: data)
         if let cache {
             saveLastFetchedTime()
@@ -57,43 +62,11 @@ class HTTPDataDownloader: HTTPDataDownloaderProtocol {
     private func getLastFetchedTime() {
         lastFetchedTime = UserDefaults.standard.object(forKey: userDefaultsLastFetchedKey) as? Date
     }
+    
     private var needRefresh: Bool {
         guard let lastFetchedTime = lastFetchedTime else { return true }
         print("Last fetched time: \(lastFetchedTime)")
         print("Time since last fetch: \(Date().timeIntervalSince(lastFetchedTime))")
         return Date().timeIntervalSince(lastFetchedTime) > refreshInterval
     }
-    
-    private func buildURL() throws -> URL {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "fakestoreapi.com"
-        components.path = endpoint.path
-        guard let url = components.url else { throw APIError.invalidURL }
-        return url
-    }
-    
-    private func validateResponse(_ response: URLResponse) throws {
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw APIError.invalidResponse
-        }
-        guard httpResponse.statusCode == 200 else {
-            throw APIError.invalidResponse
-        }
-    }
 }
-
-enum FakeStoreAPIEndpoint {
-    case products
-    case users
-    
-    var path: String {
-        switch self {
-        case .products:
-            return "/products"
-        case .users:
-            return "/users"
-        }
-    }
-}
-

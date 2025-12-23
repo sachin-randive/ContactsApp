@@ -28,14 +28,3 @@ struct ProductService: ProductServiceProtocol {
         return try await downloader.refreshData(as: Product.self)
     }
 }
-
-struct MocProductService: ProductServiceProtocol {
-    func refreshProducts() async throws -> [Product] {
-        return Product.mockProducts
-    }
-    
-    func fetchProducts() async throws -> [Product] {
-        try await Task.sleep(for: .seconds(2))
-        return Product.mockProducts
-    }
-}

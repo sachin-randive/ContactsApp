@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		C0D1009A2EFAB772005E14A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C078B0892ECC0F0700769368 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C078B0902ECC0F0700769368;
+			remoteInfo = InterviewPrepTutorial;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		C078B0912ECC0F0700769368 /* InterviewPrepTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InterviewPrepTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0D100962EFAB772005E14A5 /* InterviewPrepTutorialTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InterviewPrepTutorialTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +27,22 @@
 			path = InterviewPrepTutorial;
 			sourceTree = "<group>";
 		};
+		C0D100972EFAB772005E14A5 /* InterviewPrepTutorialTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = InterviewPrepTutorialTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C078B08E2ECC0F0700769368 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0D100932EFAB772005E14A5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				C078B0932ECC0F0700769368 /* InterviewPrepTutorial */,
+				C0D100972EFAB772005E14A5 /* InterviewPrepTutorialTests */,
 				C078B0922ECC0F0700769368 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				C078B0912ECC0F0700769368 /* InterviewPrepTutorial.app */,
+				C0D100962EFAB772005E14A5 /* InterviewPrepTutorialTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +95,29 @@
 			productReference = C078B0912ECC0F0700769368 /* InterviewPrepTutorial.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C0D100952EFAB772005E14A5 /* InterviewPrepTutorialTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0D1009C2EFAB772005E14A5 /* Build configuration list for PBXNativeTarget "InterviewPrepTutorialTests" */;
+			buildPhases = (
+				C0D100922EFAB772005E14A5 /* Sources */,
+				C0D100932EFAB772005E14A5 /* Frameworks */,
+				C0D100942EFAB772005E14A5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0D1009B2EFAB772005E14A5 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C0D100972EFAB772005E14A5 /* InterviewPrepTutorialTests */,
+			);
+			name = InterviewPrepTutorialTests;
+			packageProductDependencies = (
+			);
+			productName = InterviewPrepTutorialTests;
+			productReference = C0D100962EFAB772005E14A5 /* InterviewPrepTutorialTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +130,10 @@
 				TargetAttributes = {
 					C078B0902ECC0F0700769368 = {
 						CreatedOnToolsVersion = 16.4;
+					};
+					C0D100952EFAB772005E14A5 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = C078B0902ECC0F0700769368;
 					};
 				};
 			};
@@ -100,12 +152,20 @@
 			projectRoot = "";
 			targets = (
 				C078B0902ECC0F0700769368 /* InterviewPrepTutorial */,
+				C0D100952EFAB772005E14A5 /* InterviewPrepTutorialTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C078B08F2ECC0F0700769368 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0D100942EFAB772005E14A5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +182,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0D100922EFAB772005E14A5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C0D1009B2EFAB772005E14A5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C078B0902ECC0F0700769368 /* InterviewPrepTutorial */;
+			targetProxy = C0D1009A2EFAB772005E14A5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C078B09A2ECC0F0700769368 /* Debug */ = {
@@ -298,6 +373,40 @@
 			};
 			name = Release;
 		};
+		C0D1009D2EFAB772005E14A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = abc.InterviewPrepTutorialTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InterviewPrepTutorial.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/InterviewPrepTutorial";
+			};
+			name = Debug;
+		};
+		C0D1009E2EFAB772005E14A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = abc.InterviewPrepTutorialTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InterviewPrepTutorial.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/InterviewPrepTutorial";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -315,6 +424,15 @@
 			buildConfigurations = (
 				C078B09D2ECC0F0700769368 /* Debug */,
 				C078B09E2ECC0F0700769368 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0D1009C2EFAB772005E14A5 /* Build configuration list for PBXNativeTarget "InterviewPrepTutorialTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0D1009D2EFAB772005E14A5 /* Debug */,
+				C0D1009E2EFAB772005E14A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

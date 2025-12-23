@@ -54,10 +54,6 @@ struct ProductView: View {
 }
 private extension ProductView {
     var filteredProducts: [Product] {
-        
-        guard case .completed = viewModel.loadingState else {
-         return []
-        }
         guard !searchText.isEmpty else {
             return viewModel.products
         }

@@ -50,10 +50,6 @@ struct UserVIew: View {
 
 private extension UserVIew {
     var filteredUsers: [User] {
-        
-        guard case .completed = viewModel.loadingState else {
-         return []
-        }
         guard !searchText.isEmpty else {
             return viewModel.users
         }

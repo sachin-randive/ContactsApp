@@ -7,10 +7,18 @@
 
 import Foundation
 
+enum BankAccountError: Error {
+    case insufficientFunds
+    case invalidAmount
+    case sameAccountNumber
+    case fraudAlert
+}
 class BankAccount {
     let owner: String
     let accountNumber: String
-    let balance: Double
+    var balance: Double
+    
+    private let fraudThreshold: Double = 5000
     
     init(owner: String, accountNumber: String, balance: Double) {
         self.owner = owner
@@ -18,15 +26,23 @@ class BankAccount {
         self.balance = balance
     }
     
-    func deposit(_ amount: Double) {
-        
+    func deposit(_ amount: Double) throws {
+        guard amount > 0 else { throw BankAccountError.invalidAmount }
+        balance += amount
     }
     
-    func withdraw(_ amount: Double) {
-        
+    func withdraw(_ amount: Double) throws {
+        guard amount > 0 else { throw BankAccountError.invalidAmount }
+        guard balance >= amount else { throw BankAccountError.insufficientFunds }
+        guard amount < 5000 else { throw BankAccountError.fraudAlert }
+        balance -= amount
     }
     
-    func transfer(_ amount: Double, to recipient: BankAccount) {
-        
+    func transfer(_ amount: Double, to recipient: BankAccount) throws {
+        guard accountNumber != recipient.accountNumber else {
+            throw BankAccountError.sameAccountNumber
+        }
+        try self.withdraw(amount)
+        try recipient.deposit(amount)
     }
 }

@@ -20,7 +20,7 @@ struct BankAccountTest {
     
     // test deposit success
     @Test func testDepositSuccess() throws {
-        var account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 1000)
+        let account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 1000)
         do {
             try account.deposit(500)
             #expect(account.balance == 1500)
@@ -28,6 +28,23 @@ struct BankAccountTest {
            // #expect(false)
         }
     }
+    // test deposit invalid Amount
+    @Test func testDepositInvalidAmount() throws {
+        let account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 1000)
+        #expect(throws: BankAccountError.invalidAmount) {
+            try account.deposit(-500)
+        }
+    }
     
-
+    // test Withdraw success
+    
+    @Test func testWithdrawSuccess() throws {
+        let account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 1000)
+        do {
+            try account.withdraw(500)
+            #expect(account.balance == 500)
+        } catch {
+            //
+        }
+    }
 }

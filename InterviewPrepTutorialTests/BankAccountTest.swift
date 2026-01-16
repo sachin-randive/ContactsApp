@@ -47,4 +47,13 @@ struct BankAccountTest {
             //
         }
     }
+    
+    // test Withdraw insufficient fund
+    
+    @Test func testWithdrawWithInsufficientFund() throws {
+        let account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 1000)
+        #expect(throws: BankAccountError.insufficientFunds) {
+            try account.withdraw(2000)
+        }
+    }
 }

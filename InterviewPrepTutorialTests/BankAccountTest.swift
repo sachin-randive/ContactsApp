@@ -21,12 +21,8 @@ struct BankAccountTest {
     // test deposit success
     @Test func testDepositSuccess() throws {
         let account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 1000)
-        do {
-            try account.deposit(500)
-            #expect(account.balance == 1500)
-        } catch {
-           // #expect(false)
-        }
+        try account.deposit(500)
+        #expect(account.balance == 1500)
     }
     // test deposit invalid Amount
     @Test func testDepositInvalidAmount() throws {
@@ -40,12 +36,8 @@ struct BankAccountTest {
     
     @Test func testWithdrawSuccess() throws {
         let account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 1000)
-        do {
-            try account.withdraw(500)
-            #expect(account.balance == 500)
-        } catch {
-            //
-        }
+        try account.withdraw(500)
+        #expect(account.balance == 500)
     }
     
     // test Withdraw insufficient fund
@@ -54,6 +46,37 @@ struct BankAccountTest {
         let account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 1000)
         #expect(throws: BankAccountError.insufficientFunds) {
             try account.withdraw(2000)
+        }
+    }
+    
+    @Test func testWithrawwithFraud() throws {
+        let account = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 10_000)
+        #expect(throws: BankAccountError.fraudAlert) {
+            try account.withdraw(6_000)
+        }
+    }
+    
+    @Test func testTransferSuccessed()  throws {
+        let account1 = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 10_000)
+        let account2 = BankAccount(owner: "Rakesh", accountNumber: "1234518190", balance: 1_000)
+        
+        try account1.transfer( 1_000, to: account2)
+        #expect(account1.balance == 9_000)
+        #expect(account2.balance == 2_000)
+    }
+    
+    @Test func testTransferInsufficientFunds() async throws {
+        let account1 = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 10_000)
+        let account2 = BankAccount(owner: "Rakesh", accountNumber: "1234518190", balance: 1_000)
+        #expect(throws: BankAccountError.insufficientFunds) {
+            try account1.transfer( 20_000, to: account2)
+        }
+    }
+    
+    @Test func testTransferSameAccount() async throws {
+        let account1 = BankAccount(owner: "Sachin", accountNumber: "1234567890", balance: 10_000)
+        #expect(throws: BankAccountError.sameAccountNumber) {
+            try account1.transfer( 20_000, to: account1)
         }
     }
 }
